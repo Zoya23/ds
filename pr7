@@ -1,0 +1,69 @@
+class GraphNode :
+    def __init__(self,d):
+        self.data = d
+        self.status=0
+
+class MyGraph :
+    def __init__(self):
+        self.nodelist=[]
+        self.matrix = list()
+       
+    def addNodes(self):
+            n = int (input("Enter how many nodes:"))
+            for i in range(0,n) :
+               # print(i)
+                self.matrix.append(list())
+               # print(self.matrix[i])
+                for j in range(0,n) :
+                   # print(j)
+                    self.matrix[i].append(0)
+                   # print(self.matrix[i])
+                t = input("Enter a node :")
+                g = GraphNode(t)
+                self.nodelist.append(g)
+               # print(self.nodelist)
+       
+       
+    def addEdge(self,edge):
+            r=-1
+            c=-1
+            for i in range(len(self.nodelist)):
+                #print(len(self.nodelist))
+           
+                if(self.nodelist[i].data == edge[0]) :
+                    r=i
+                if(self.nodelist[i].data == edge[1]) :
+                    c=i
+            if r==-1 or c==-1 :
+                print("Invalid edge...")
+            else:
+                #w=int(input("Enter a weight:"+edge))
+                self.matrix[r][c]=1
+
+
+    def printGraph(self):
+        for i in range(len(self.nodelist)):
+            print(self.matrix[i])
+
+    def bfs(self):
+        templist = list()
+
+        for i in range(len(self.nodelist)):
+            self.nodelist[i].status = 1
+
+        templist.append(self.nodelist[0])
+        self.nodelist[0].status=2
+        traversal = ""
+        while(len(templist) != 0) :
+            node = templist[0]
+            templist.remove(node)
+            traversal += node.data
+            node.status = 3
+            n = self.nodelist.index(node)            
+            if(n>=0) :
+                for t in range(0,len(self.nodelist)):
+                    if self.matrix[n][t] ==1 and self.nodelist[t].status==1  :
+                        templist.append(self.nodelist[t])
+                        self.nodelist[t].status=2
+           
+        print("BFS Travesal :" , traversal)
