@@ -1,0 +1,69 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+
+class Stack:
+    def __init__(self):
+        self.top = None
+
+    # Push operation
+    def push(self, data):
+        new_node = Node(data)
+        new_node.next = self.top
+        self.top = new_node
+
+    # Pop operation
+    def pop(self):
+        if self.top is None:
+            print("Stack is empty")
+            return None
+
+        data = self.top.data
+        self.top = self.top.next
+        return data
+
+    # Peep operation
+    def peep(self):
+        if self.top is None:
+            print("Stack is empty")
+            return None
+
+        return self.top.data
+
+
+# Balanced Delimiter
+def balanced_delimiter(expression):
+    stack = Stack()
+
+    for ch in expression:
+
+        if ch == '(' or ch == '[' or ch == '{':
+            stack.push(ch)
+
+        elif ch == ')' or ch == ']' or ch == '}':
+
+            if stack.top is None:
+                return False
+
+            top = stack.pop()
+
+            if (ch == ')' and top != '(') or \
+               (ch == ']' and top != '[') or \
+               (ch == '}' and top != '{'):
+                return False
+
+    if stack.top is None:
+        return True
+    else:
+        return False
+
+
+# Main
+expression = input("Enter expression: ")
+
+if balanced_delimiter(expression):
+    print("Balanced")
+else:
+    print("Not Balanced")
