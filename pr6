@@ -1,0 +1,121 @@
+class BSTNode:
+    def __init__(self,data):
+        self.data=data
+        self.left=None
+        self.right=None
+
+class BSTree :
+    def __init__(self, root):
+        self.root=root
+
+    def preorder(self,node):        
+        if(node is not None):
+            print(node.data)
+            self.preorder(node.left)
+            self.preorder(node.right)
+
+    def inorder(self,node):        
+        if(node is not None):
+            self.inorder(node.left)
+            print(node.data)
+            self.inorder(node.right)
+
+    def postorder(self,node):        
+        if(node is not None):
+            self.postorder(node.left)
+            self.postorder(node.right)
+            print(node.data)
+           
+
+    def insertNode(self, root, node): #Pg No 179
+        if root is None:
+            root=node
+        else:
+            if root.data>node.data:
+                if root.left==None:
+                    root.left=node
+                else:
+                    self.insertNode(root.left, node)
+            else:
+                if root.right==None:
+                    root.right=node
+                else:
+                    self.insertNode(root.right, node)
+
+
+    def delNode(self, root, data): #Pg 180
+        print("root is :", root.data ,", data is :", data)
+        if root.data==data:
+            if root.right and root.left :
+                [psucc, succ] = self.findMin(root.right, root)                
+                if psucc.left == succ:
+                    psucc.left = succ.right
+                else:
+                    psucc.right= succ.right
+                succ.left = root.left
+                succ.right=root.right
+                return succ
+            else:
+                if root.left:
+                        return root.left
+                else:
+                    return root.right
+        else:
+            if root.data>data:
+                if root.left:
+                    root.left = self.delNode(root.left, data)
+            else:
+                if root.right :
+                    root.right = self.delNode(root.right, data)
+            return root
+   
+
+    def findMin(self,root,parent): #Pg 181
+        if root.left:
+            return findMin(root.left,root)
+        else:
+            return [parent, root]
+       
+
+A = BSTNode(10)
+B = BSTNode(6)
+C = BSTNode(12)
+D = BSTNode(2)
+E = BSTNode(8)
+F = BSTNode(13)
+t1 = BSTree(A)
+t1.insertNode(None, A)
+t1.insertNode(t1.root, B)
+t1.insertNode(t1.root, C)
+t1.insertNode(t1.root, D)
+t1.insertNode(t1.root, E)
+t1.insertNode(t1.root, F)
+
+#t1.preorder(t1.root)
+#t1.inorder(t1.root)
+t1.postorder(t1.root)
+
+# Dont uncomment all the three at the same time.  Uncomment case by case -
+
+
+'''
+#1. Node with 0 child
+t1.root = t1.delNode(t1.root,13)
+print("After deleting..")
+t1.preorder(t1.root)
+'''
+
+'''
+#2. Node with 1 child
+t1.root = t1.delNode(t1.root,12)
+print("After deleting..")
+t1.preorder(t1.root)
+'''      
+
+
+       
+'''
+#3.Node with 2 children
+t1.root = t1.delNode(t1.root,10)
+print("After deleting..")
+t1.preorder(t1.root)
