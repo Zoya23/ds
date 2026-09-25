@@ -1,0 +1,168 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+        self.prev = None
+ 
+    def showdata(self):
+        print("Data:", self.data)
+
+
+class Nodelist:
+    def __init__(self):
+        self.start = None
+        self.last = None
+
+    def insert(self, data):
+        newnode = Node(data)
+        if self.start is None:
+            self.start = newnode
+            self.last = newnode
+        else:
+            self.last.next = newnode
+            newnode.prev = self.last
+            self.last = newnode
+
+    def traverse(self):
+        if self.start is None:
+            print("List is Empty")
+        else:
+            ptr = self.start
+            while ptr:
+                ptr.showdata()
+                ptr = ptr.next
+
+    def trav_reverse(self):
+        if self.last is None:
+            print("List is Empty")
+        else:
+            ptr = self.last
+            while ptr:
+                ptr.showdata()
+                ptr = ptr.prev
+
+    def insertbefore(self, data, bef_data):
+        newnode = Node(data)
+        if self.start is None:
+            print("List is Empty")
+        else:
+            ptr = self.start
+            while ptr and ptr.data != bef_data:
+                ptr = ptr.next
+
+            if ptr is None:
+                print("Node Not Present")
+            else:
+                newnode.next = ptr
+                newnode.prev = ptr.prev
+                if ptr.prev:
+                    ptr.prev.next = newnode
+                else:
+                    self.start = newnode
+                ptr.prev = newnode
+
+    def insertafter(self, data, aft_data):
+        newnode = Node(data)
+        if self.start is None:
+            print("List is Empty")
+        else:
+            ptr = self.start
+            while ptr and ptr.data != aft_data:
+                ptr = ptr.next
+
+            if ptr is None:
+                print("Node Not Present")
+            else:
+                newnode.prev = ptr
+                newnode.next = ptr.next
+                if ptr.next:
+                    ptr.next.prev = newnode
+                else:
+                   
+                    self.last = newnode
+                ptr.next = newnode
+
+    def deletefirst(self):
+        if self.start is None:
+            print("List is Empty!")
+        elif self.start.next is None:
+            self.start = None
+            self.last = None
+        else:
+            self.start = self.start.next
+            self.start.prev = None
+
+    def deletelast(self):
+        if self.start is None:
+            print("List is Empty!")
+        elif self.last.prev is None:
+            self.start = None
+            self.last = None
+        else:
+            self.last = self.last.prev
+            self.last.next = None
+
+    def deletespecific(self, data):
+        if self.start is None:
+            print("List is Empty!")
+        ptr = self.start
+        found = False
+
+        while ptr:
+            if ptr.data == data:
+                found = True
+                # If node is the first node
+                if ptr.prev is None:
+                    self.start = ptr.next
+                    if self.start:
+                        self.start.prev = None
+                    else:
+                        self.last = None
+                    ptr = self.start
+                # If node is the last node
+                elif ptr.next is None:
+                    self.last = ptr.prev
+                    self.last.next = None
+                    ptr = None  # end loop
+                # If node is in the middle
+                else:
+                    ptr.prev.next = ptr.next
+                    ptr.next.prev = ptr.prev
+                    ptr = ptr.next
+            else:
+                ptr = ptr.next
+
+        if not found:
+            print("Node Not Present!")
+
+
+# ---- Main Program ----
+op = int(input("Enter The Number Of Nodes: "))
+dll = Nodelist()
+
+for i in range(op):
+    d = int(input("Enter Data: "))
+    dll.insert(d)
+
+dll.traverse()
+dll.trav_reverse()
+
+print("------Insert Before-------")
+dll.insertbefore(5, 20)
+dll.traverse()
+
+print("------Insert After-------")
+dll.insertafter(35, 30)
+dll.traverse()
+
+print("------Delete First-------")
+dll.deletefirst()
+dll.traverse()
+
+print("------Delete Last-------")
+dll.deletelast()
+dll.traverse()
+
+print("-----Delete Any (All Occurrences)--------")
+dll.deletespecific(5)
+dll.traverse()
