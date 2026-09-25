@@ -1,0 +1,83 @@
+class JobNode:
+    def __init__(self, job_no, process_name, size):
+        self.job_no = job_no
+        self.process_name = process_name
+        self.size = size
+        self.next = None
+
+
+class JobQueue:
+    def __init__(self):
+        self.front = None
+        self.rear = None
+
+    # Insert job
+    def insert(self, job_no, process_name, size):
+        new_job = JobNode(job_no, process_name, size)
+
+        if self.rear is None:
+            self.front = self.rear = new_job
+        else:
+            self.rear.next = new_job
+            self.rear = new_job
+
+    # Delete job
+    def delete(self):
+        if self.front is None:
+            print("Queue is empty")
+            return
+
+        print("Deleted Job:", self.front.job_no)
+
+        self.front = self.front.next
+
+        if self.front is None:
+            self.rear = None
+
+    # Traverse queue
+    def display(self):
+        if self.front is None:
+            print("Queue is empty")
+            return
+
+        temp = self.front
+
+        while temp is not None:
+            print("Job No:", temp.job_no)
+            print("Process:", temp.process_name)
+            print("Size:", temp.size)
+            print()
+
+            temp = temp.next
+
+    # Show first ready job
+    def first_job(self):
+        if self.front is None:
+            print("No job is ready")
+        else:
+            print("First Ready Job:")
+            print("Job No:", self.front.job_no)
+            print("Process:", self.front.process_name)
+            print("Size:", self.front.size)
+
+
+# Create Queue
+q = JobQueue()
+
+# Insert jobs
+q.insert(1, "Chrome", 200)
+q.insert(2, "Python", 150)
+q.insert(3, "MS Word", 100)
+
+# Display queue
+print("Job Queue:")
+q.display()
+
+# Show first ready job
+q.first_job()
+
+# Delete first job
+q.delete()
+
+print("\nQueue after deletion:")
+q.display()
